@@ -50,6 +50,8 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         Instance = this;
+        PlayerAxis = new Player[xLen, yLen]; // 배열을 초기화합니다.
+        activePlayer = new List<GameObject>(); // activePlayer 리스트를 초기화합니다.
         SpawnPlayer(0, 2, 0, true);
         SpawnPlayer(0, 2, 4, false);
     }
@@ -173,6 +175,11 @@ public class BoardManager : MonoBehaviour
         go.transform.localScale = temp;
         
         go.transform.SetParent(transform);
+        if (go.GetComponent<Player>() == null)
+        {
+            Debug.LogError("Player component not found on instantiated GameObject.");
+            return;
+        }
         PlayerAxis[x, y] = go.GetComponent<Player>();
         PlayerAxis[x, y].SetPosition(x, y);
         activePlayer.Add(go);
